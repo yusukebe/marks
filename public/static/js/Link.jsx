@@ -3,7 +3,7 @@ const Link = props => {
 
   const fetchData = async url => {
     const queryParams = new URLSearchParams({ url: url })
-    const response = await fetch('/link?' + queryParams)
+    const response = await fetch('/ogp?' + queryParams)
     const meta = await response.json()
     setMeta(meta)
   }
