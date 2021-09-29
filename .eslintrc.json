@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "eslint:recommended"
+  ],
+  "globals": {},
+  "rules": {},
+  "parserOptions": {
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "jsx": true
+    },
+    "sourceType": "module",
+    "ecmaVersion": 2017
+  },
+  "plugins": [
+    "react"
+  ],
+  "env": {
+    "es6": true
+  }
+}

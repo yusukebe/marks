@@ -1,0 +1,21 @@
+name = "bookmarks"
+type = "javascript"
+
+account_id = ""
+workers_dev = true
+route = ""
+zone_id = ""
+compatibility_date = "2021-09-27"
+
+kv_namespaces = [
+  { binding = "BOOKMARK", preview_id = "", id = "" }
+]
+
+[site]
+entry-point = "./"
+bucket = "./public"
+
+[build]
+command = "npm install && npm run build"
+[build.upload]
+format = "service-worker"
