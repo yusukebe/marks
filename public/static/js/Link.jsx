@@ -30,7 +30,7 @@ const Link = (props) => {
             />
           </div>
           <div className=" px-2">
-            <h1 className="text-sm font-bold text-gray-700">
+            <h1 className="text-sm font-bold text-gray-700 break-all">
               {meta['og:title'] || props.url}
             </h1>
             <p className="text-gray-600 text-xs">
