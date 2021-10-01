@@ -8,6 +8,9 @@ const getLinks = async (): Promise<string[]> => {
 }
 
 const addLink = async (linkUrl: string): Promise<string[]> => {
+  if (!isURL(linkUrl)) {
+    throw new Error(linkUrl + ' is not URL')
+  }
   let links = await getLinks()
   const linkSet = new Set(links)
   if (linkSet.has(linkUrl)) {
@@ -17,6 +20,12 @@ const addLink = async (linkUrl: string): Promise<string[]> => {
   links.unshift(linkUrl)
   await BOOKMARK.put(KEY, JSON.stringify(links))
   return links
+}
+
+const isURL = (url: string): boolean => {
+  const regexp = /https?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+/
+  const match = url.match(regexp)
+  return match !== null
 }
 
 export { getLinks, addLink }

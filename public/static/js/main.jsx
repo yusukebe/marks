@@ -15,7 +15,7 @@ const App = () => {
   }, [])
 
   const [newUrl, setNewUrl] = useState('')
-  const handleChange = e => {
+  const handleChange = (e) => {
     setNewUrl(e.target.value)
   }
   const createNewLink = async () => {
@@ -29,16 +29,25 @@ const App = () => {
 
   return (
     <div>
-      <div>
-        <input
-          value={newUrl}
-          onChange={handleChange}
-          className="block rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        />
-        <button onClick={createNewLink}>Add</button>
+      <div class="flex justify-center items-center">
+        <form class="w-full flex flex-col p-6" action="">
+          <input
+            value={newUrl}
+            onChange={handleChange}
+            class="text-gray-700 shadow border rounded border-gray-300 focus:outline-none focus:shadow-outline py-1 px-3 mb-3"
+            type="text"
+            placeholder="URL"
+          />
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4"
+            onClick={createNewLink}
+          >
+            Add
+          </button>
+        </form>
       </div>
-      <hr />
-      <div>
+      <hr class="mt-2 mb-4" />
+      <div class="items-center justify-center">
         {urls.map((url, index) => (
           <Link key={url} url={url} />
         ))}

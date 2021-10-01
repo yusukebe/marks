@@ -17,7 +17,14 @@ router.post('/links', async (request: Request) => {
 
   if ('url' in requestBody) {
     const requestUrl = requestBody.url
-    await addLink(requestUrl)
+    try {
+      await addLink(requestUrl)
+    } catch (err) {
+      console.log(err)
+      return new Response('Internal Server Error', {
+        status: 500,
+      })
+    }
     const responseBody = {
       message: 'Link added',
       url: requestUrl,
