@@ -12,7 +12,6 @@ const Link = (props) => {
     if (!str) {
       return ''
     }
-    console.log(str)
     return str.length > length ? str.substring(0, length - 3) + '...' : str
   }
 
@@ -23,16 +22,18 @@ const Link = (props) => {
   return (
     <div className="mb-4">
       <a href={props.url} target="_blank">
-        <div class="p-2 bg-white flex items-center rounded-md shadow-md hover:scale-105 transition transform duration-500 cursor-pointer">
+        <div className="p-2 bg-white flex items-center rounded-md shadow-md hover:scale-105 transition transform duration-500 cursor-pointer">
           <div className="">
             <img
               src={meta['og:image']}
-              class="w-24 h-24 object-cover rounded-sm max-w-none"
+              className="w-24 h-24 object-cover rounded-sm max-w-none"
             />
           </div>
-          <div class=" px-2">
-            <h1 class="text-sm font-bold text-gray-700">{meta['og:title']}</h1>
-            <p class="text-gray-600 text-xs">
+          <div className=" px-2">
+            <h1 className="text-sm font-bold text-gray-700">
+              {meta['og:title']}
+            </h1>
+            <p className="text-gray-600 text-xs">
               {truncateString(meta['og:description'], 40)}
             </p>
           </div>

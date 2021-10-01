@@ -6,7 +6,6 @@ const App = () => {
   const fetchData = async () => {
     const response = await fetch('/links')
     const data = await response.json()
-    console.log(data)
     setUrls(data)
   }
 
@@ -14,11 +13,25 @@ const App = () => {
     fetchData()
   }, [])
 
-  const [newUrl, setNewUrl] = useState('')
+  const getParam = (name) => {
+    const url = window.location.href
+    name = name.replace(/[\[\]]/g, '\\$&')
+    const regexp = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)')
+    const results = regexp.exec(url)
+    if (!results) return null
+    if (!results[2]) return ''
+    return decodeURIComponent(results[2].replace(/\+/g, ' '))
+  }
+
+  const initialUrl = getParam('url') || ''
+  const [newUrl, setNewUrl] = useState(initialUrl)
+
   const handleChange = (e) => {
     setNewUrl(e.target.value)
   }
+
   const createNewLink = async () => {
+    setNewUrl('')
     const body = JSON.stringify({ url: newUrl })
     const headers = {
       'Content-Type': 'application/json',
@@ -27,27 +40,32 @@ const App = () => {
     fetchData()
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    createNewLink()
+  }
+
   return (
     <div>
-      <div class="flex justify-center items-center">
-        <form class="w-full flex flex-col p-6" action="">
+      <div className="flex justify-center items-center">
+        <form
+          className="w-full flex flex-col p-6"
+          onSubmit={handleSubmit.bind(this)}
+        >
           <input
             value={newUrl}
-            onChange={handleChange}
-            class="text-gray-700 shadow border rounded border-gray-300 focus:outline-none focus:shadow-outline py-1 px-3 mb-3"
+            className="text-gray-700 shadow border rounded border-gray-300 focus:outline-none focus:shadow-outline py-1 px-3 mb-3"
             type="text"
             placeholder="URL"
+            onChange={handleChange}
           />
-          <button
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4"
-            onClick={createNewLink}
-          >
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4">
             Add
           </button>
         </form>
       </div>
-      <hr class="mt-2 mb-4" />
-      <div class="items-center justify-center">
+      <hr className="mt-2 mb-4" />
+      <div className="items-center justify-center">
         {urls.map((url, index) => (
           <Link key={url} url={url} />
         ))}
