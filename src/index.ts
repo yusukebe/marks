@@ -10,7 +10,7 @@ const handleEvent = async (event: FetchEvent): Promise<Response> => {
   ) {
     return await getAssetFromKV(event)
   } else {
-    return await router.handle(event.request)
+    return await router.handle(event.request, event)
   }
 }
 

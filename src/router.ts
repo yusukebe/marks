@@ -40,20 +40,32 @@ router.post('/links', async (request: Request) => {
   }
 })
 
-router.get('/ogp', async (request: Request) => {
+router.get('/ogp', async (request: Request, event: FetchEvent) => {
   const requestUrl = new URL(request.url)
   const linkUrl = requestUrl.searchParams.get('url')
+  let response: Response
   if (!linkUrl) {
-    return new Response(JSON.stringify({}), {
-      headers: { 'contenty-type': 'application/json' },
+    response = new Response(JSON.stringify({}), {
+      headers: {
+        'contenty-type': 'application/json',
+      },
       status: 404,
     })
+  } else {
+    const { ogp, cached } = await getOGP(linkUrl)
+    response = new Response(JSON.stringify(ogp), {
+      headers: {
+        'content-type': 'application/json',
+      },
+      status: 200,
+    })
+    if (cached) {
+      response.headers.append('x-kv-cache', 'HIT')
+    } else {
+      response.headers.append('x-kv-cached', 'MISS')
+    }
   }
-  const ogps = await getOGP(linkUrl)
-  return new Response(JSON.stringify(ogps), {
-    headers: { 'content-type': 'application/json' },
-    status: 200,
-  })
+  return response
 })
 
 export { router }
