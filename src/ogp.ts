@@ -49,7 +49,17 @@ const getOGP = async (url: string): Promise<OGP> => {
       image: data['og:image'],
     }
   }
+  ogp.title = decodeHtmlEntity(ogp.title)
+  ogp.description = ogp.description
+    ? decodeHtmlEntity(ogp.description)
+    : ogp.description
   return ogp
+}
+
+var decodeHtmlEntity = function (str: string) {
+  return str.replace(/&#(\d+);/g, function (match, dec) {
+    return String.fromCharCode(dec)
+  })
 }
 
 export { getOGP, OGP }
