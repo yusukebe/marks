@@ -35,6 +35,9 @@ const Link = (props) => {
             <h1 className="text-sm font-bold text-gray-700 break-all">
               {link.title || link.url}
             </h1>
+            <p className="text-gray-400 text-xs">
+              {new URL(link.url).hostname}
+            </p>
             <p className="text-gray-600 text-xs">
               {truncateString(link.description, 40)}
             </p>
