@@ -17,8 +17,9 @@ router.post('/links', async (request: Request) => {
 
   if ('url' in requestBody) {
     const requestUrl = requestBody.url
+    let key: string
     try {
-      await addLink(requestUrl)
+      key = await addLink(requestUrl)
     } catch (err) {
       console.log(err)
       return new Response('Internal Server Error', {
@@ -26,6 +27,7 @@ router.post('/links', async (request: Request) => {
       })
     }
     const responseBody = {
+      key: key,
       message: 'Link added',
       url: requestUrl,
     }
@@ -52,18 +54,13 @@ router.get('/ogp', async (request: Request, event: FetchEvent) => {
       status: 404,
     })
   } else {
-    const { ogp, cached } = await getOGP(linkUrl)
+    const ogp = await getOGP(linkUrl)
     response = new Response(JSON.stringify(ogp), {
       headers: {
         'content-type': 'application/json',
       },
       status: 200,
     })
-    if (cached) {
-      response.headers.append('x-kv-cache', 'HIT')
-    } else {
-      response.headers.append('x-kv-cached', 'MISS')
-    }
   }
   return response
 })

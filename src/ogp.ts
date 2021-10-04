@@ -1,42 +1,55 @@
 import DOMParser from 'dom-parser'
 
-declare let BOOKMARK: KVNamespace
+interface OGP {
+  key?: string
+  url: string
+  title: string
+  description?: string
+  image?: string
+}
 
-const getOGP = async (url: string) => {
-  const key = 'OGP-' + url
-  const json = await BOOKMARK.get(key)
-  let ogp = {}
-
-  if (json) {
-    ogp = JSON.parse(json)
-    return { ogp: ogp, cached: true }
+const truncateString = (str: string, length: number) => {
+  if (!str) {
+    return ''
   }
+  return str.length > length ? str.substring(0, length - 3) + '...' : str
+}
+
+const getOGP = async (url: string): Promise<OGP> => {
+  let ogp: OGP
 
   const response = await fetch(url)
   const html = await response.text()
 
   const parser = new DOMParser()
   const doc = parser.parseFromString(html)
+
   const meta = doc.getElementsByTagName('meta')
   if (!meta) {
-    return {}
+    const elements = doc.getElementsByTagName('title')
+    ogp = {
+      url: url,
+      title: elements ? elements[0].textContent : url,
+    }
+  } else {
+    const data = Array.from(meta)
+      .filter((element) => element.getAttribute('property'))
+      .reduce((pre: { [key: string]: string }, ogp) => {
+        const property = ogp.getAttribute('property')
+        const content = ogp.getAttribute('content')
+        if (property && content) {
+          pre[property] = content
+        }
+        return pre
+      }, {})
+    ogp = {
+      url: url,
+      title: data['og:title'],
+      description: truncateString(data['og:description'], 50),
+      image: data['og:image'],
+    }
   }
-
-  ogp = Array.from(meta)
-    .filter((element) => element.getAttribute('property'))
-    .reduce((pre: { [key: string]: string }, ogp) => {
-      const property = ogp.getAttribute('property')
-      const content = ogp.getAttribute('content')
-      if (property && content) {
-        pre[property] = content
-      }
-      return pre
-    }, {})
-
-  await BOOKMARK.put(key, JSON.stringify(ogp), {
-    expirationTtl: 60 * 60 * 24 * 30,
-  })
-  return { ogp: ogp, cached: false }
+  return ogp
 }
 
-export { getOGP }
+export { getOGP, OGP }

@@ -1,12 +1,13 @@
 const { useState, useEffect } = React
 
 const App = () => {
-  const [urls, setUrls] = useState([])
+  const [links, setLinks] = useState([])
 
   const fetchData = async () => {
     const response = await fetch('/links')
     const data = await response.json()
-    setUrls(data)
+    console.log(data)
+    setLinks(data)
   }
 
   useEffect(() => {
@@ -65,10 +66,12 @@ const App = () => {
         </form>
       </div>
       <hr className="mt-2 mb-4" />
-      <div className="items-center justify-center">
-        {urls.map((url, index) => (
-          <Link key={url} url={url} />
-        ))}
+      <div>
+        <div className="items-center justify-center">
+          {links.map((link, index) => (
+            <Link key={link.key} link={link} />
+          ))}
+        </div>
       </div>
     </div>
   )
