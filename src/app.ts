@@ -25,7 +25,8 @@ const getLinks = async (): Promise<Link[]> => {
   return links
 }
 
-const deleteOGP = async (ogpKey: string): Promise<boolean> => {
+const deleteLink = async (url: string): Promise<boolean> => {
+  const ogpKey = OGP_PREFIX + url
   const json = await BOOKMARK.get(ogpKey)
 
   if (json) {
@@ -48,13 +49,13 @@ const addLink = async (url: string): Promise<string> => {
     throw new Error(url + ' is not URL')
   }
 
-  const ogpKey = OGP_PREFIX + url
-  await deleteOGP(ogpKey)
+  await deleteLink(url)
 
   const ogp = await fetchOGP(url)
-
   const linkKey = PREFIX + makeKey()
   ogp.key = linkKey
+
+  const ogpKey = OGP_PREFIX + url
   await BOOKMARK.put(ogpKey, JSON.stringify(ogp))
 
   try {
@@ -79,4 +80,4 @@ const makeKey = (): string => {
   return `${hash}`
 }
 
-export { getLinks, addLink }
+export { getLinks, addLink, deleteLink }
