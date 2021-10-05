@@ -16,6 +16,23 @@ const truncateString = (str: string, length: number) => {
   return str.length > length ? str.substring(0, length - 3) + '...' : str
 }
 
+const extractCanonical = (doc: DOMParser.Dom): string | null => {
+  const links = doc.getElementsByTagName('link')
+  if (links) {
+    for (const i in links) {
+      const rel = links[i].getAttribute('rel')
+      if (rel) {
+        if (rel.toLowerCase() == 'canonical') {
+          const url = links[i].getAttribute('href')
+          console.log(url)
+          return url
+        }
+      }
+    }
+  }
+  return null
+}
+
 const fetchOGP = async (url: string): Promise<OGP> => {
   let ogp: OGP
 
@@ -24,6 +41,7 @@ const fetchOGP = async (url: string): Promise<OGP> => {
 
   const parser = new DOMParser()
   const doc = parser.parseFromString(html)
+  url = extractCanonical(doc) || url
 
   const meta = doc.getElementsByTagName('meta')
   if (meta) {
