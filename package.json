@@ -1,5 +1,5 @@
 {
-  "name": "bookmarcs",
+  "name": "marks",
   "version": "0.1.0",
   "description": "Bookmarks app with Cloudflare Workers",
   "license": "MIT",
