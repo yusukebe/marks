@@ -71,27 +71,4 @@ router.delete('/links', async (request: Request) => {
   }
 })
 
-router.get('/ogp', async (request: Request, event: FetchEvent) => {
-  const requestUrl = new URL(request.url)
-  const linkUrl = requestUrl.searchParams.get('url')
-  let response: Response
-  if (!linkUrl) {
-    response = new Response(JSON.stringify({}), {
-      headers: {
-        'contenty-type': 'application/json',
-      },
-      status: 404,
-    })
-  } else {
-    const ogp = await fetchOGP(linkUrl)
-    response = new Response(JSON.stringify(ogp), {
-      headers: {
-        'content-type': 'application/json',
-      },
-      status: 200,
-    })
-  }
-  return response
-})
-
 export { router }
