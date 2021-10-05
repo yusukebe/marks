@@ -16,7 +16,7 @@ const truncateString = (str: string, length: number) => {
   return str.length > length ? str.substring(0, length - 3) + '...' : str
 }
 
-const getOGP = async (url: string): Promise<OGP> => {
+const fetchOGP = async (url: string): Promise<OGP> => {
   let ogp: OGP
 
   const response = await fetch(url)
@@ -26,13 +26,7 @@ const getOGP = async (url: string): Promise<OGP> => {
   const doc = parser.parseFromString(html)
 
   const meta = doc.getElementsByTagName('meta')
-  if (!meta) {
-    const elements = doc.getElementsByTagName('title')
-    ogp = {
-      url: url,
-      title: elements ? elements[0].textContent : url,
-    }
-  } else {
+  if (meta) {
     const data = Array.from(meta)
       .filter((element) => element.getAttribute('property'))
       .reduce((pre: { [key: string]: string }, ogp) => {
@@ -43,16 +37,27 @@ const getOGP = async (url: string): Promise<OGP> => {
         }
         return pre
       }, {})
+    let title = data['og:title']
+    if (!title) {
+      const elements = doc.getElementsByTagName('title')
+      title = elements ? elements[0].textContent : url
+    }
     ogp = {
       url: url,
-      title: data['og:title'],
-      description: truncateString(data['og:description'], 50),
+      title: title,
+      description: truncateString(data['og:description'], 60),
       image: data['og:image'],
     }
+  } else {
+    ogp = {
+      url: url,
+      title: url,
+    }
   }
+
   ogp.title = decode(ogp.title)
   ogp.description = ogp.description ? decode(ogp.description) : ogp.description
   return ogp
 }
 
-export { getOGP, OGP }
+export { fetchOGP, OGP }

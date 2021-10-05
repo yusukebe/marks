@@ -1,5 +1,5 @@
 import { Router } from 'itty-router'
-import { getOGP } from './ogp'
+import { fetchOGP } from './ogp'
 import { getLinks, addLink } from './app'
 
 const router = Router()
@@ -54,7 +54,7 @@ router.get('/ogp', async (request: Request, event: FetchEvent) => {
       status: 404,
     })
   } else {
-    const ogp = await getOGP(linkUrl)
+    const ogp = await fetchOGP(linkUrl)
     response = new Response(JSON.stringify(ogp), {
       headers: {
         'content-type': 'application/json',

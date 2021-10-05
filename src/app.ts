@@ -1,5 +1,4 @@
-import { mapRequestToAsset } from '@cloudflare/kv-asset-handler'
-import { getOGP, OGP } from './ogp'
+import { fetchOGP, OGP } from './ogp'
 
 declare let BOOKMARK: KVNamespace
 const PREFIX: string = 'v1:link:'
@@ -52,7 +51,7 @@ const addLink = async (url: string): Promise<string> => {
   const ogpKey = OGP_PREFIX + url
   await deleteOGP(ogpKey)
 
-  const ogp = await getOGP(url)
+  const ogp = await fetchOGP(url)
 
   const linkKey = PREFIX + makeKey()
   ogp.key = linkKey
