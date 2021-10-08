@@ -1,5 +1,4 @@
 import { Router } from 'itty-router'
-import { fetchOGP } from './ogp'
 import { getLinks, addLink, deleteLink } from './app'
 
 const router = Router()

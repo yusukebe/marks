@@ -19,3 +19,7 @@ bucket = "./public"
 command = "npm install && npm run build"
 [build.upload]
 format = "service-worker"
+
+[secrets]
+# NAME
+# PASS

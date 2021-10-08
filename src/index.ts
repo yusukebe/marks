@@ -1,8 +1,21 @@
 import { getAssetFromKV } from '@cloudflare/kv-asset-handler'
 import { router } from './router'
+import { parseAuthHeader, unauthorizedResponse } from './auth'
+
+declare let NAME: string
+declare let PASS: string
 
 const handleEvent = async (event: FetchEvent): Promise<Response> => {
-  const requestUrl = new URL(event.request.url)
+  const request = event.request
+
+  const credentials = parseAuthHeader(
+    request.headers.get('Authorization') || '',
+  )
+  if (!credentials || credentials.name !== NAME || credentials.pass !== PASS) {
+    return unauthorizedResponse('Unauthorized')
+  }
+
+  const requestUrl = new URL(request.url)
   if (
     requestUrl.pathname === '/' ||
     requestUrl.pathname === '/favicon.ico' ||
@@ -10,7 +23,7 @@ const handleEvent = async (event: FetchEvent): Promise<Response> => {
   ) {
     return await getAssetFromKV(event)
   } else {
-    return await router.handle(event.request, event)
+    return await router.handle(request, event)
   }
 }
 
