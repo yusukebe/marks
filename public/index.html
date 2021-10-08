@@ -23,33 +23,38 @@
     />
     <link rel="manifest" href="/static/site.webmanifest" />
 
-    <link
-      href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
-      rel="stylesheet"
-    />
-
     <title>Marks</title>
     <script
-      src="https://unpkg.com/react@16/umd/react.development.js"
+      src="https://unpkg.com/react/umd/react.production.min.js"
       crossorigin
     ></script>
     <script
-      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"
       crossorigin
     ></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/babel" src="static/js/util.js" defer></script>
     <script type="text/babel" src="static/js/Link.jsx" defer></script>
+    <script type="text/babel" src="static/js/Alert.jsx" defer></script>
     <script type="text/babel" src="static/js/main.jsx" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
-    <div class="container mx-auto py-4 px-4">
-      <h1 class="text-2xl text-center font-bold">
-        <a href="/">Marks</a>
-      </h1>
-      <div id="app"></div>
-    </div>
-    <address class="italic text-center pb-4">Marks</address>
+    <div id="app"></div>
   </body>
 </html>

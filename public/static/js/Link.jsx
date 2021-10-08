@@ -1,41 +1,24 @@
 const Link = (props) => {
-  const [meta, setMeta] = useState([])
   const link = props.link
-  console.log(link)
 
-  const fetchData = async (url) => {
-    const queryParams = new URLSearchParams({ url: url })
-    const response = await fetch('/ogp?' + queryParams)
-    const meta = await response.json()
-    setMeta(meta)
-  }
-
-  const truncateString = (str, length) => {
-    if (!str) {
-      return ''
-    }
-    return str.length > length ? str.substring(0, length - 3) + '...' : str
-  }
-
-  useEffect(() => {
-    //fetchData(props.url)
-  }, [])
+  const Image = ReactBootstrap.Image
 
   return (
     <div className="mb-4">
-      <a href={link.url} target="_blank">
+      <a href={link.url} className="no-underline" target="_blank">
         <div className="p-2 bg-white flex items-center rounded-md shadow-md hover:scale-105 transition transform duration-500 cursor-pointer">
           <div className="">
-            <img
+            <Image
               src={link.image}
-              className="w-24 h-24 object-cover rounded-sm max-w-none"
+              className="w-24 h-24 object-cover max-w-none"
+              rounded
             />
           </div>
           <div className=" px-2">
-            <h1 className="text-sm font-bold text-gray-700 break-all">
+            <h2 className="text-sm font-bold text-gray-700 break-all mb-0">
               {link.title || link.url}
-            </h1>
-            <p className="text-gray-400 text-xs">
+            </h2>
+            <p className="text-gray-400 text-xs mb-1">
               {new URL(link.url).hostname}
             </p>
             <p className="text-gray-600 text-xs">

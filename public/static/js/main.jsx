@@ -2,11 +2,12 @@ const { useState, useEffect } = React
 
 const App = () => {
   const [links, setLinks] = useState([])
+  const [url, setUrl] = useState(getParam('url') || '')
+  const [showInfo, setShowInfo] = useState({ show: false, url: url })
 
   const fetchData = async () => {
     const response = await fetch('/links')
     const data = await response.json()
-    console.log(data)
     setLinks(data)
   }
 
@@ -14,31 +15,27 @@ const App = () => {
     fetchData()
   }, [])
 
-  const getParam = (name) => {
-    const url = window.location.href
-    name = name.replace(/[\[\]]/g, '\\$&')
-    const regexp = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)')
-    const results = regexp.exec(url)
-    if (!results) return null
-    if (!results[2]) return ''
-    return decodeURIComponent(results[2].replace(/\+/g, ' '))
-  }
-
-  const initialUrl = getParam('url') || ''
-  const [newUrl, setNewUrl] = useState(initialUrl)
-
-  const handleChange = (e) => {
-    setNewUrl(e.target.value)
-  }
-
   const createNewLink = async () => {
-    setNewUrl('')
-    const body = JSON.stringify({ url: newUrl })
+    removeParam()
+
+    if (!isUrl(url)) {
+      return
+    }
+
+    const body = JSON.stringify({ url: url })
     const headers = {
       'Content-Type': 'application/json',
     }
     const response = await fetch('/links', { method: 'POST', headers, body })
+    if (!response.ok) {
+      return
+    }
+    setShowInfo({ show: true, url: url })
     fetchData()
+  }
+
+  const handleChange = (e) => {
+    setUrl(e.target.value)
   }
 
   const handleSubmit = (e) => {
@@ -46,25 +43,41 @@ const App = () => {
     createNewLink()
   }
 
+  const Container = ReactBootstrap.Container
+  const Button = ReactBootstrap.Button
+  const Form = ReactBootstrap.Form
+
   return (
-    <div>
+    <Container fluid="sm" className="py-4 px-4">
+      <h1 class="text-2xl text-center font-bold">
+        <a class="no-underline text-black" href="/">
+          Marks
+        </a>
+      </h1>
       <div className="flex justify-center items-center">
-        <form
+        <Form
           className="w-full flex flex-col p-6"
           onSubmit={handleSubmit.bind(this)}
         >
-          <input
-            value={newUrl}
-            className="text-gray-700 shadow border rounded border-gray-300 focus:outline-none focus:shadow-outline py-1 px-3 mb-3"
-            type="text"
-            placeholder="URL"
-            onChange={handleChange}
-          />
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4">
+          <Form.Group>
+            <Form.Control
+              value={url}
+              onChange={handleChange}
+              className="text-gray-700 shadow border rounded border-gray-300 focus:outline-none focus:shadow-outline
+              px-3 mb-3"
+              type="text"
+              placeholder="URL"
+            />
+          </Form.Group>
+          <Button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4"
+          >
             Add
-          </button>
-        </form>
+          </Button>
+        </Form>
       </div>
+      <InfoAlert showInfo={showInfo} setShowInfo={setShowInfo}></InfoAlert>
       <hr className="mt-2 mb-4" />
       <div>
         <div className="items-center justify-center">
@@ -73,7 +86,8 @@ const App = () => {
           ))}
         </div>
       </div>
-    </div>
+      <address class="italic text-center pb-4">Marks</address>
+    </Container>
   )
 }
 
