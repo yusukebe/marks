@@ -31,6 +31,7 @@ const App = () => {
       return
     }
     setShowInfo({ show: true, url: url })
+    setUrl('')
     fetchData()
   }
 
