@@ -5,6 +5,12 @@ const App = () => {
   const [url, setUrl] = useState(getParam('url') || '')
   const [showInfo, setShowInfo] = useState({ show: false, url: url })
 
+  const handleChange = (e) => setUrl(e.target.value)
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    createNewLink()
+  }
+
   const fetchData = async () => {
     const response = await fetch('/links')
     const data = await response.json()
@@ -34,22 +40,6 @@ const App = () => {
     setUrl('')
     fetchData()
   }
-
-  const handleChange = (e) => {
-    setUrl(e.target.value)
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    createNewLink()
-  }
-
-  const Container = ReactBootstrap.Container
-  const Button = ReactBootstrap.Button
-  const Form = ReactBootstrap.Form
-  const FormControl = ReactBootstrap.FormControl
-  const Navbar = ReactBootstrap.Navbar
-  const Nav = ReactBootstrap.Nav
 
   return (
     <div>
@@ -93,7 +83,10 @@ const App = () => {
             ))}
           </div>
         </div>
-        <address class="italic text-center pb-4">Marks</address>
+        <address className="italic text-center pb-4">
+          <Delete />
+          Marks
+        </address>
       </Container>
     </div>
   )

@@ -1,8 +1,6 @@
 const Link = (props) => {
   const link = props.link
 
-  const Image = ReactBootstrap.Image
-
   return (
     <div className="mb-4">
       <a href={link.url} className="no-underline" target="_blank">
