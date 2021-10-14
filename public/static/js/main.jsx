@@ -93,7 +93,10 @@ const App = () => {
             ))}
           </div>
         </div>
-        <address class="italic text-center pb-4">Marks</address>
+        <address class="italic text-center pb-4">
+          <Delete />
+          Marks
+        </address>
       </Container>
     </div>
   )
