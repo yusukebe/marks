@@ -83,7 +83,7 @@ const App = () => {
             ))}
           </div>
         </div>
-        <address class="italic text-center pb-4">
+        <address className="italic text-center pb-4">
           <Delete />
           Marks
         </address>

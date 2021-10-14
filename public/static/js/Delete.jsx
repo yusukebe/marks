@@ -33,7 +33,11 @@ const Delete = () => {
 
   return (
     <div>
-      <Button variant="link" onClick={handleShow}>
+      <Button
+        variant="link"
+        onClick={handleShow}
+        className="italic no-underline text-black pb-0"
+      >
         Delete Link
       </Button>
       <Modal
