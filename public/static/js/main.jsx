@@ -5,6 +5,12 @@ const App = () => {
   const [url, setUrl] = useState(getParam('url') || '')
   const [showInfo, setShowInfo] = useState({ show: false, url: url })
 
+  const handleChange = (e) => setUrl(e.target.value)
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    createNewLink()
+  }
+
   const fetchData = async () => {
     const response = await fetch('/links')
     const data = await response.json()
@@ -33,15 +39,6 @@ const App = () => {
     setShowInfo({ show: true, url: url })
     setUrl('')
     fetchData()
-  }
-
-  const handleChange = (e) => {
-    setUrl(e.target.value)
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    createNewLink()
   }
 
   return (

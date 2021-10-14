@@ -1,16 +1,34 @@
-const Delete = (props) => {
+const Delete = () => {
   const [show, setShow] = useState(false)
   const [url, setUrl] = useState('')
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
-
-  const handleChange = (e) => {
-    setUrl(e.target.value)
-  }
+  const handleChange = (e) => setUrl(e.target.value)
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    deleteLink()
+  }
+
+  const deleteLink = async () => {
+    if (!isUrl(url)) {
+      return
+    }
+
+    const body = JSON.stringify({ url: url })
+    const headers = {
+      'Content-Type': 'application/json',
+    }
+    const response = await fetch('/links', { method: 'DELETE', headers, body })
+    if (!response.ok) {
+      return
+    }
+    const data = await response.json()
+    if (data['deleted']) {
+      setUrl('')
+      setShow(false)
+    }
   }
 
   return (
