@@ -72,10 +72,10 @@ const App = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <Container fluid="sm" className="py-4 px-4">
-        <div className="flex justify-center items-center">
+      <Container fluid="sm" className="py-2 px-4">
+        <div className="flex justify-center items-center px-4">
           <Form
-            className="w-full flex flex-col p-6"
+            className="w-full flex flex-col pt-2 pb-4"
             onSubmit={handleSubmit.bind(this)}
           >
             <Form.Group>
@@ -90,7 +90,7 @@ const App = () => {
             </Form.Group>
             <Button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4 text-sm"
             >
               Add
             </Button>
