@@ -47,48 +47,67 @@ const App = () => {
   const Container = ReactBootstrap.Container
   const Button = ReactBootstrap.Button
   const Form = ReactBootstrap.Form
+  const FormControl = ReactBootstrap.FormControl
+  const Navbar = ReactBootstrap.Navbar
+  const Nav = ReactBootstrap.Nav
 
   return (
-    <Container fluid="sm" className="py-4 px-4">
-      <h1 class="text-2xl text-center font-bold">
-        <a class="no-underline text-black" href="/">
-          Marks
-        </a>
-      </h1>
-      <div className="flex justify-center items-center">
-        <Form
-          className="w-full flex flex-col p-6"
-          onSubmit={handleSubmit.bind(this)}
-        >
-          <Form.Group>
-            <Form.Control
-              value={url}
-              onChange={handleChange}
-              className="text-gray-700 shadow border rounded border-gray-300 focus:outline-none focus:shadow-outline
-              px-3 mb-3"
-              type="text"
-              placeholder="URL"
-            />
-          </Form.Group>
-          <Button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4"
+    <div>
+      <Navbar expand="true">
+        <Container>
+          <Navbar.Brand
+            className="absolute w-full left-0 top-3 text-center mx-auto"
+            href="/"
           >
-            Add
-          </Button>
-        </Form>
-      </div>
-      <InfoAlert showInfo={showInfo} setShowInfo={setShowInfo}></InfoAlert>
-      <hr className="mt-2 mb-4" />
-      <div>
-        <div className="items-center justify-center">
-          {links.map((link, index) => (
-            <Link key={link.key} link={link} />
-          ))}
+            <h1 className="text-2xl font-bold">Marks</h1>
+          </Navbar.Brand>
+          <Navbar.Toggle
+            className="z-10 float-right ml-auto"
+            aria-controls="basic-navbar-nav"
+          />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto px-3">
+              <Nav.Link href="#">Delete Link</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+      <Container fluid="sm" className="py-4 px-4">
+        <div className="flex justify-center items-center">
+          <Form
+            className="w-full flex flex-col p-6"
+            onSubmit={handleSubmit.bind(this)}
+          >
+            <Form.Group>
+              <Form.Control
+                value={url}
+                onChange={handleChange}
+                className="text-gray-700 shadow border rounded border-gray-300 focus:outline-none focus:shadow-outline
+              px-3 mb-3"
+                type="text"
+                placeholder="URL"
+              />
+            </Form.Group>
+            <Button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4"
+            >
+              Add
+            </Button>
+          </Form>
         </div>
-      </div>
-      <address class="italic text-center pb-4">Marks</address>
-    </Container>
+        <InfoAlert showInfo={showInfo} setShowInfo={setShowInfo}></InfoAlert>
+        <hr className="mt-2 mb-4" />
+        <div>
+          <div className="items-center justify-center">
+            {links.map((link, index) => (
+              <Link key={link.key} link={link} />
+            ))}
+          </div>
+        </div>
+        <address class="italic text-center pb-4">Marks</address>
+      </Container>
+    </div>
   )
 }
 
