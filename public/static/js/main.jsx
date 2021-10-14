@@ -44,13 +44,6 @@ const App = () => {
     createNewLink()
   }
 
-  const Container = ReactBootstrap.Container
-  const Button = ReactBootstrap.Button
-  const Form = ReactBootstrap.Form
-  const FormControl = ReactBootstrap.FormControl
-  const Navbar = ReactBootstrap.Navbar
-  const Nav = ReactBootstrap.Nav
-
   return (
     <div>
       <Navbar expand="true">
