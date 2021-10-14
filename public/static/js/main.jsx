@@ -55,24 +55,12 @@ const App = () => {
     <div>
       <Navbar expand="true">
         <Container>
-          <Navbar.Brand
-            className="absolute w-full left-0 top-3 text-center mx-auto"
-            href="/"
-          >
+          <Navbar.Brand className="w-full text-center mx-auto" href="/">
             <h1 className="text-2xl font-bold">Marks</h1>
           </Navbar.Brand>
-          <Navbar.Toggle
-            className="z-10 float-right ml-auto"
-            aria-controls="basic-navbar-nav"
-          />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto px-3">
-              <Nav.Link href="#">Delete Link</Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
         </Container>
       </Navbar>
-      <Container fluid="sm" className="py-2 px-4">
+      <Container fluid="sm" className="pb-2 px-4">
         <div className="flex justify-center items-center px-4">
           <Form
             className="w-full flex flex-col pt-2 pb-4"
