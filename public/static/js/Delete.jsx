@@ -68,13 +68,13 @@ const Delete = () => {
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
+            <Button variant="outline-secondary" onClick={handleClose}>
               Close
             </Button>
             <Button
               type="submit"
               className="font-bold rounded py-2 px-4 text-sm"
-              variant="danger"
+              variant="outline-danger"
             >
               Delete
             </Button>
