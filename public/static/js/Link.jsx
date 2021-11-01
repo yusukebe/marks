@@ -1,6 +1,8 @@
 const Link = (props) => {
   const link = props.link
 
+  if (!isUrl(link.url)) return <div></div>
+
   return (
     <div className="mb-4">
       <a href={link.url} className="no-underline" target="_blank">
