@@ -1,4 +1,5 @@
 import { fetchOGP, OGP } from './ogp'
+import { isURL, makeKey } from '../util'
 
 declare let BOOKMARK: KVNamespace
 const PREFIX: string = 'v1:link:'
@@ -29,19 +30,16 @@ const deleteLink = async (url: string): Promise<boolean> => {
   const ogpKey = OGP_PREFIX + url
   const json = await BOOKMARK.get(ogpKey)
 
-  if (json) {
-    const ogpInKV = JSON.parse(json) as OGP
-    const linkKey = ogpInKV.key
-    if (linkKey) {
-      console.log('delete: ' + ogpKey)
-      await BOOKMARK.delete(ogpKey)
-      console.log('delete: ' + linkKey)
-      await BOOKMARK.delete(linkKey)
-    }
-    return true
-  } else {
-    return false
+  if (!json) return false
+  const ogpInKV = JSON.parse(json) as OGP
+  const linkKey = ogpInKV.key
+  if (linkKey) {
+    console.log('delete: ' + ogpKey)
+    await BOOKMARK.delete(ogpKey)
+    console.log('delete: ' + linkKey)
+    await BOOKMARK.delete(linkKey)
   }
+  return true
 }
 
 const addLink = async (url: string): Promise<string> => {
@@ -67,17 +65,6 @@ const addLink = async (url: string): Promise<string> => {
   }
 
   return linkKey
-}
-
-const isURL = (url: string): boolean => {
-  const regexp = /^https?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+/
-  const match = url.match(regexp)
-  return match !== null
-}
-
-const makeKey = (): string => {
-  const hash = 99999999999999 - new Date().getTime()
-  return `${hash}`
 }
 
 export { getLinks, addLink, deleteLink }

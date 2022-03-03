@@ -1,7 +1,7 @@
 import DOMParser from 'dom-parser'
 import { decode } from 'html-entities'
 
-interface OGP {
+type OGP = {
   key?: string
   url: string
   title: string
@@ -10,9 +10,7 @@ interface OGP {
 }
 
 const truncateString = (str: string, length: number) => {
-  if (!str) {
-    return ''
-  }
+  if (!str) return ''
   return str.length > length ? str.substring(0, length - 3) + '...' : str
 }
 
@@ -21,12 +19,10 @@ const extractCanonical = (doc: DOMParser.Dom): string | null => {
   if (links) {
     for (const i in links) {
       const rel = links[i].getAttribute('rel')
-      if (rel) {
-        if (rel.toLowerCase() == 'canonical') {
-          const url = links[i].getAttribute('href')
-          console.log(url)
-          return url
-        }
+      if (rel && rel.toLowerCase() == 'canonical') {
+        const url = links[i].getAttribute('href')
+        console.log(url)
+        return url
       }
     }
   }

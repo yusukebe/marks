@@ -10,3 +10,7 @@ wasm-pack.log
 worker/
 node_modules/
 .cargo-ok
+.env
+yarn-error.log
+
+public/static/dist
