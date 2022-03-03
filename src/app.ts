@@ -29,19 +29,16 @@ const deleteLink = async (url: string): Promise<boolean> => {
   const ogpKey = OGP_PREFIX + url
   const json = await BOOKMARK.get(ogpKey)
 
-  if (json) {
-    const ogpInKV = JSON.parse(json) as OGP
-    const linkKey = ogpInKV.key
-    if (linkKey) {
-      console.log('delete: ' + ogpKey)
-      await BOOKMARK.delete(ogpKey)
-      console.log('delete: ' + linkKey)
-      await BOOKMARK.delete(linkKey)
-    }
-    return true
-  } else {
-    return false
+  if (!json) return false
+  const ogpInKV = JSON.parse(json) as OGP
+  const linkKey = ogpInKV.key
+  if (linkKey) {
+    console.log('delete: ' + ogpKey)
+    await BOOKMARK.delete(ogpKey)
+    console.log('delete: ' + linkKey)
+    await BOOKMARK.delete(linkKey)
   }
+  return true
 }
 
 const addLink = async (url: string): Promise<string> => {

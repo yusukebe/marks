@@ -1,7 +1,7 @@
 import DOMParser from 'dom-parser'
 import { decode } from 'html-entities'
 
-interface OGP {
+type OGP = {
   key?: string
   url: string
   title: string
@@ -10,9 +10,7 @@ interface OGP {
 }
 
 const truncateString = (str: string, length: number) => {
-  if (!str) {
-    return ''
-  }
+  if (!str) return ''
   return str.length > length ? str.substring(0, length - 3) + '...' : str
 }
 
