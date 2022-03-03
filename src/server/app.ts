@@ -1,4 +1,5 @@
 import { fetchOGP, OGP } from './ogp'
+import { isURL, makeKey } from '../util'
 
 declare let BOOKMARK: KVNamespace
 const PREFIX: string = 'v1:link:'
@@ -64,17 +65,6 @@ const addLink = async (url: string): Promise<string> => {
   }
 
   return linkKey
-}
-
-const isURL = (url: string): boolean => {
-  const regexp = /^https?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+/
-  const match = url.match(regexp)
-  return match !== null
-}
-
-const makeKey = (): string => {
-  const hash = 99999999999999 - new Date().getTime()
-  return `${hash}`
 }
 
 export { getLinks, addLink, deleteLink }
