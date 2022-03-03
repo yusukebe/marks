@@ -5,10 +5,9 @@
   "license": "MIT",
   "main": "dist/worker.js",
   "scripts": {
-    "build": "webpack",
-    "format": "prettier --write  '*.{json,js}' 'src/**/*.{js,ts}' 'test/**/*.{js,ts}'",
-    "lint": "eslint --max-warnings=0 src && prettier --check '*.{json,js}' 'src/**/*.{js,ts}' 'test/**/*.{js,ts}'",
-    "test": "jest --config jestconfig.json --verbose"
+    "build": "esbuild --bundle --sourcemap --minify --outdir=dist ./src/index.ts",
+    "dev": "miniflare --live-reload --debug --env .env",
+    "publish": "wrangler publish dist/index.js"
   },
   "eslintConfig": {
     "root": true,
@@ -27,11 +26,12 @@
     "@typescript-eslint/parser": "^4.16.1",
     "autoprefixer": "^10.3.6",
     "dom-parser": "^0.1.6",
+    "esbuild": "^0.14.24",
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-config-typescript": "^3.0.0",
-    "itty-router": "^2.4.4",
     "jest": "^27.0.1",
+    "miniflare": "2.2.0",
     "postcss": "^8.3.8",
     "prettier": "^2.3.0",
     "service-worker-mock": "^2.0.5",
@@ -43,6 +43,7 @@
     "webpack-cli": "^4.7.0"
   },
   "dependencies": {
+    "hono": "^0.5.1",
     "html-entities": "^2.3.2"
   }
 }

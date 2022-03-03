@@ -21,12 +21,10 @@ const extractCanonical = (doc: DOMParser.Dom): string | null => {
   if (links) {
     for (const i in links) {
       const rel = links[i].getAttribute('rel')
-      if (rel) {
-        if (rel.toLowerCase() == 'canonical') {
-          const url = links[i].getAttribute('href')
-          console.log(url)
-          return url
-        }
+      if (rel && rel.toLowerCase() == 'canonical') {
+        const url = links[i].getAttribute('href')
+        console.log(url)
+        return url
       }
     }
   }
