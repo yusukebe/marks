@@ -1,19 +1,13 @@
 import React from 'react'
 import { Image } from 'react-bootstrap'
 import { isURL, truncateString } from '../util'
+import type { Link } from '../types'
 
 type Props = {
   link: Link
 }
 
-export type Link = {
-  url: string
-  title: string
-  image: string
-  description: string
-}
-
-export const Link: React.VFC<Props> = (props) => {
+export const List: React.VFC<Props> = (props) => {
   const link = props.link
 
   if (!isURL(link.url)) return <div></div>
@@ -30,7 +24,7 @@ export const Link: React.VFC<Props> = (props) => {
               {link.title || link.url}
             </h2>
             <p className='text-gray-400 text-xs mb-1'>{new URL(link.url).hostname}</p>
-            <p className='text-gray-600 text-xs'>{truncateString(link.description, 40)}</p>
+            <p className='text-gray-600 text-xs'>{truncateString(link.description || '', 40)}</p>
           </div>
         </div>
       </a>

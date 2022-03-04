@@ -1,13 +1,6 @@
 import DOMParser from 'dom-parser'
 import { decode } from 'html-entities'
-
-type OGP = {
-  key?: string
-  url: string
-  title: string
-  description?: string
-  image?: string
-}
+import { OGP } from '../types'
 
 const truncateString = (str: string, length: number) => {
   if (!str) return ''
@@ -21,7 +14,6 @@ const extractCanonical = (doc: DOMParser.Dom): string | null => {
       const rel = links[i].getAttribute('rel')
       if (rel && rel.toLowerCase() == 'canonical') {
         const url = links[i].getAttribute('href')
-        console.log(url)
         return url
       }
     }
@@ -43,7 +35,7 @@ const fetchOGP = async (url: string): Promise<OGP> => {
   if (meta) {
     const data = Array.from(meta)
       .filter((element) => element.getAttribute('property'))
-      .reduce((pre: { [key: string]: string }, ogp) => {
+      .reduce((pre: Record<string, string>, ogp) => {
         const property = ogp.getAttribute('property')
         const content = ogp.getAttribute('content')
         if (property && content) {

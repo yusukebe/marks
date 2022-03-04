@@ -1,29 +1,20 @@
 import { fetchOGP, OGP } from './ogp'
 import { isURL, makeKey } from '../util'
+import { Link, ListResult } from '../types'
 
 declare let BOOKMARK: KVNamespace
 const PREFIX: string = 'v1:link:'
 const OGP_PREFIX: string = 'v1:ogp:'
 
-interface Link {
-  url: string
-  key: string
-  title: string
-  description?: string
-  image?: string
-}
-
-const getLinks = async (): Promise<Link[]> => {
-  const list = await BOOKMARK.list({ prefix: PREFIX })
+const getLinks = async (cursor: string | undefined, limit: number = 20): Promise<ListResult> => {
+  const list = await BOOKMARK.list<Link>({ prefix: PREFIX, limit: limit, cursor: cursor })
   const keys = list.keys
 
-  const links: Link[] = keys.map((value) => {
-    const metadata = value.metadata as OGP
-    const link: Link = metadata as Link //XXX
-    return link
-  })
+  const links = keys
+    .map((value) => value.metadata)
+    .filter((link): link is Link => link != undefined)
 
-  return links
+  return { links: links, cursor: list.cursor, complete: list.list_complete }
 }
 
 const deleteLink = async (url: string): Promise<boolean> => {
@@ -31,7 +22,7 @@ const deleteLink = async (url: string): Promise<boolean> => {
   const json = await BOOKMARK.get(ogpKey)
 
   if (!json) return false
-  const ogpInKV = JSON.parse(json) as OGP
+  const ogpInKV: OGP = JSON.parse(json)
   const linkKey = ogpInKV.key
   if (linkKey) {
     console.log('delete: ' + ogpKey)
@@ -43,9 +34,7 @@ const deleteLink = async (url: string): Promise<boolean> => {
 }
 
 const addLink = async (url: string): Promise<string> => {
-  if (!isURL(url)) {
-    throw new Error(url + ' is not URL')
-  }
+  if (!isURL(url)) throw new Error(url + ' is not URL')
 
   await deleteLink(url)
 

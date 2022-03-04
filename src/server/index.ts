@@ -16,7 +16,9 @@ hono.use('/', serveStatic())
 hono.use('/links/*', bodyParse())
 
 hono.get('/links', async (c) => {
-  const links = await getLinks()
+  const cursor = c.req.query('cursor')
+  const limit = c.req.query('limit') || '20'
+  const links = await getLinks(cursor, Number(limit))
   return c.json(links)
 })
 

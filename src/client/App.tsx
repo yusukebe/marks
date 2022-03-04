@@ -1,28 +1,43 @@
 import React from 'react'
 import { useState, useEffect, FormEventHandler, ChangeEventHandler } from 'react'
 import { getParam, removeParam, isURL } from '../util'
-import { Link } from './Link'
+import { Link, ListResult } from '../types'
+import { List } from './Link'
 import { InfoAlert } from './Alert'
 import { Delete } from './Delete'
+import { More } from './More'
 
 import { Navbar, Container, Form, Button } from 'react-bootstrap'
 
 const App = () => {
   const [links, setLinks] = useState<Link[]>([])
-  const [url, setUrl] = useState(getParam('url') || '')
+  const [url, setURL] = useState(getParam('url') || '')
   const [showInfo, setShowInfo] = useState({ show: false, url: url })
+  const [cursor, setCursor] = useState('')
+  const [listComplete, setListComplete] = useState(false)
 
   const handleChange: ChangeEventHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setUrl(e.target.value)
+    setURL(e.target.value)
   const handleSubmit: FormEventHandler = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault()
     createNewLink()
   }
 
+  const loadNextPage = async () => {
+    console.log('loadNextPage')
+    await fetchData()
+  }
+
   const fetchData = async () => {
-    const response = await fetch('/links')
-    const data: Link[] = await response.json()
-    setLinks(data)
+    const query = new URLSearchParams({ cursor: cursor, limit: '10' })
+    const url = `/links?${query}`
+    const response = await fetch(url)
+    const data: ListResult = await response.json()
+    if (listComplete === false) {
+      setLinks([...links, ...data.links])
+      setCursor(data.cursor || '')
+      setListComplete(data.complete)
+    }
   }
 
   useEffect(() => {
@@ -45,7 +60,7 @@ const App = () => {
       return
     }
     setShowInfo({ show: true, url: url })
-    setUrl('')
+    setURL('')
     fetchData()
   }
 
@@ -59,7 +74,7 @@ const App = () => {
         </Container>
       </Navbar>
       <Container fluid='sm' className='pb-2 px-4'>
-        <div className='flex justify-center items-center px-4'>
+        <div className='flex justify-center items-center'>
           <Form className='w-full flex flex-col pt-2 pb-4' onSubmit={handleSubmit}>
             <Form.Group>
               <Form.Control
@@ -83,14 +98,17 @@ const App = () => {
         <hr className='mt-2 mb-4' />
         <div>
           <div className='items-center justify-center'>
-            {links.map((link, index) => (
-              <Link key={link.url} link={link} />
+            {links.map((link) => (
+              <List key={link.url} link={link} />
             ))}
           </div>
         </div>
+        <div>
+          <More loadNextPage={loadNextPage}></More>
+        </div>
         <address className='italic text-center pb-4'>
           <Delete />
-          Marks
+          <a href='/'>Marks</a>
         </address>
       </Container>
     </div>
