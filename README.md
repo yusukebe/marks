@@ -27,9 +27,21 @@ $ yarn install
 
 ## Setting
 
+Rename `wrangler.toml`:
+
 ```plain
-$ mv wrangler.example.toml
+$ mv wrangler.example.toml wrangler.toml
+```
+
+Make KV namespace id:
+
+```plain
 $ wrangler kv:namespace create BOOKMARK
+
+🌀 Creating namespace with title "marks-BOOKMARK"
+✨ Success!
+Add the following to your configuration file in your kv_namespaces array:
+{ binding = "BOOKMARK", id = "your id" }
 ```
 
 Edit `wrangler.toml`:
