@@ -53,6 +53,29 @@ $ wrangler secret put PASS
 $ wrangler publish
 ```
 
+## macOS Shortcuts
+
+![SS](https://user-images.githubusercontent.com/10682/156721647-be28cc16-73d8-4059-83c9-0dcd2989d5f5.png)
+
+## Bookmarklet
+
+```js
+javascript: (function () {
+  var url = document.location.href
+  var links = document.getElementsByTagName('link')
+  for (i in links) {
+    if (links[i].rel) {
+      if (links[i].rel.toLowerCase() == 'canonical') {
+        url = links[i].href
+      }
+    }
+  }
+  var redirect =
+    'https://{app-name}.{your-name}.workers.dev/?url=' + encodeURIComponent(url)
+  location.href = redirect
+})()
+```
+
 ## Author
 
 Yusuke Wada <https://github.com/yusukebe>
